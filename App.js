@@ -21,16 +21,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  indicatorContainer: {
-    flexDirection: 'row',
-    justifyContent:'center',
-    alignItems:'center',
-  },
-  normalDots:{
-        width:8,
-        height:8,
-        borderRadius:4,
-      
-        marginHorizontal:4,
-    }
 });

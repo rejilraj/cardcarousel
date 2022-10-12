@@ -1,3 +1,4 @@
+
 import {
   Animated,
   AppRegistry,
@@ -5,14 +6,21 @@ import {
   ScrollView,
   View,
   Text,
+  StyleSheet,
+  useWindowDimensions,
 } from "react-native";
-import React, { Component } from 'react';
+import React, { Component, useRef } from 'react';
 import data from "../data";
 
-//const {width} =Dimensions.get('window');
+
 
 
 function HorizontalScroll  (props) {
+  const scrollX = useRef(new Animated.Value(0)).current;
+
+  let { width: windowWidth, height: windowHeight } = useWindowDimensions();
+  windowHeight = windowHeight-300;
+
   return (
     <View
       style={{
@@ -28,9 +36,14 @@ function HorizontalScroll  (props) {
         snapToAlignment={"center"}
         decelerationRate="fast"
         scrollEnabled={true}
+        bounces={false}
+        onScroll = {Animated.event(
+          [{nativeEvent: {contentOffset: {x: scrollX}}}],
+          {useNativeDriver:false}
+          )}
       >
         {data.dummyData.map((dummyData, index) => (
-          <View
+          <Animated.View
             key={index}
             style={{
               backgroundColor: dummyData.color,
@@ -54,11 +67,52 @@ function HorizontalScroll  (props) {
             >
               {dummyData.title}
             </Text>
-          </View>
+          </Animated.View>
         ))}
       </ScrollView>
+      <View style={styles.indicatorContainer}>
+      {
+        data.dummyData.map((dummyData,index) => {
+          const width = scrollX.interpolate({
+            inputRange: [
+              windowWidth * (index - 1),
+              windowWidth * (index),
+              windowWidth * (index + 1),
+            ],
+            outputRange: [8,16,8],
+            extrapolate:'clamp',
+          });
+
+          return (
+            <Animated.View
+              key={index}
+              style={[styles.normalDots, {width}]}
+            ></Animated.View>
+          ); 
+        })
+
+      }
+        <Animated.View></Animated.View>
+      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  indicatorContainer:{
+    flexDirection : "row",
+    justifyContent : "center",
+    alignItems : "center",
+  },
+  normalDots:{
+    width: 8,
+    height:8,
+    borderRadius:4,
+    backgroundColor:"grey",
+    marginHorizontal: 3,
+    marginTop: 10,
+    
+  }
+})
 
   export default HorizontalScroll;

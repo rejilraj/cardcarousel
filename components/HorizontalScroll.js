@@ -1,25 +1,25 @@
 
 import {
   Animated,
-  AppRegistry,
-  Dimensions,
   ScrollView,
   View,
   Text,
   StyleSheet,
   useWindowDimensions,
+  TouchableOpacity,
+  Pressable,
 } from "react-native";
-import React, { Component, useRef } from 'react';
+import React, { useRef } from 'react';
 import data from "../data";
 
 
 
 
-function HorizontalScroll  (props) {
+function HorizontalScroll  ({ navigation })  {
   const scrollX = useRef(new Animated.Value(0)).current;
 
   let { width: windowWidth, height: windowHeight } = useWindowDimensions();
-  windowHeight = windowHeight-300;
+  windowHeight = windowHeight - 300;
 
   return (
     <View
@@ -37,10 +37,10 @@ function HorizontalScroll  (props) {
         decelerationRate="fast"
         scrollEnabled={true}
         bounces={false}
-        onScroll = {Animated.event(
-          [{nativeEvent: {contentOffset: {x: scrollX}}}],
-          {useNativeDriver:false}
-          )}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          { useNativeDriver: false }
+        )}
       >
         {data.dummyData.map((dummyData, index) => (
           <Animated.View
@@ -57,42 +57,50 @@ function HorizontalScroll  (props) {
               borderRadius: 12,
             }}
           >
-            <Text
-              style={{
-                fontSize: 20,
-                padding: 15,
-                color: "white",
-                textAlign: "center",
+            <Pressable
+              onPress={() => {
+                navigation.navigate("DetailScreen", {
+                  head:dummyData.title,
+                  body:dummyData.color,
+                });
               }}
             >
-              {dummyData.title}
-            </Text>
+              <Text
+                style={{
+                  fontSize: 20,
+                  padding: 15,
+                  color: "white",
+                  textAlign: "center",
+                }}
+                key = {index.id}
+              >
+                {dummyData.title}
+              </Text>
+            </Pressable>
           </Animated.View>
         ))}
       </ScrollView>
+
       <View style={styles.indicatorContainer}>
-      {
-        data.dummyData.map((dummyData,index) => {
+        {data.dummyData.map((dummyData, index) => {
           const width = scrollX.interpolate({
             inputRange: [
               windowWidth * (index - 1),
-              windowWidth * (index),
+              windowWidth * index,
               windowWidth * (index + 1),
             ],
-            outputRange: [8,16,8],
-            extrapolate:'clamp',
+            outputRange: [8, 16, 8],
+            extrapolate: "clamp",
           });
 
           return (
             <Animated.View
               key={index}
-              style={[styles.normalDots, {width}]}
+              style={[styles.normalDots, { width }]}
             ></Animated.View>
-          ); 
-        })
+          );
+        })}
 
-      }
-        <Animated.View></Animated.View>
       </View>
     </View>
   );
@@ -110,7 +118,7 @@ const styles = StyleSheet.create({
     borderRadius:4,
     backgroundColor:"grey",
     marginHorizontal: 3,
-    marginTop: 10,
+    marginTop: 15,
     
   }
 })

@@ -7,10 +7,12 @@ import {
   Text,
 } from "react-native";
 import React, { Component } from 'react';
+import data from "../data";
 
 //const {width} =Dimensions.get('window');
 
-function HorizontalScroll  () {
+
+function HorizontalScroll  (props) {
   return (
     <View
       style={{
@@ -26,133 +28,34 @@ function HorizontalScroll  () {
         snapToAlignment={"center"}
         decelerationRate="fast"
         scrollEnabled={true}
-        onScroll={Animated.event([
-          { nativeEvent: { contentOffset: {  } } },
-        ])}
       >
-        <View
-          style={{
-            backgroundColor: "#87CEEB",
-            flex: 1,
-            marginTop: 20,
-            justifyContent: "center",
-            alignItems: "center",
-            height: 180,
-            width: 350,
-            marginHorizontal: 10,
-            borderRadius: 12,
-          }}
-        >
-          <Text
+        {data.dummyData.map((dummyData, index) => (
+          <View
+            key={index}
             style={{
-              fontSize: 20,
-              padding: 15,
-              color: "white",
-              textAlign: "center",
+              backgroundColor: dummyData.color,
+              flex: 1,
+              marginTop: 20,
+              justifyContent: "center",
+              alignItems: "center",
+              height: 180,
+              width: 350,
+              marginHorizontal: 10,
+              borderRadius: 12,
             }}
           >
-            Screen 1
-          </Text>
-        </View>
-        <View
-          style={{
-            backgroundColor: "#F433FF",
-            flex: 1,
-            marginTop: 20,
-            justifyContent: "center",
-            alignItems: "center",
-            height: 180,
-            width: 350,
-            marginHorizontal: 10,
-            borderRadius: 12,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 20,
-              padding: 15,
-              color: "white",
-              textAlign: "center",
-            }}
-          >
-            Screen 2
-          </Text>
-        </View>
-        <View
-          style={{
-            backgroundColor: "#9E7BFF",
-            flex: 1,
-            marginTop: 20,
-            justifyContent: "center",
-            alignItems: "center",
-            height: 180,
-            width: 350,
-            marginHorizontal: 10,
-            borderRadius: 12,
-            left: 4,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 20,
-              padding: 15,
-              color: "white",
-              textAlign: "center",
-            }}
-          >
-            Screen 3
-          </Text>
-        </View>
-        <View
-          style={{
-            backgroundColor: "#6C2DC7",
-            flex: 1,
-            marginTop: 20,
-            justifyContent: "center",
-            alignItems: "center",
-            height: 180,
-            width: 350,
-            marginHorizontal: 10,
-            borderRadius: 12,
-            left: 5,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 20,
-              padding: 15,
-              color: "white",
-              textAlign: "center",
-            }}
-          >
-            Screen 4
-          </Text>
-        </View>
-        <View
-          style={{
-            backgroundColor: "#FF4500",
-            flex: 1,
-            marginTop: 20,
-            justifyContent: "center",
-            alignItems: "center",
-            height: 180,
-            width: 350,
-            marginHorizontal: 10,
-            borderRadius: 12,
-            left: 1,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 20,
-              padding: 15,
-              color: "white",
-              textAlign: "center",
-            }}
-          >
-            Screen 5
-          </Text>
-        </View>
+            <Text
+              style={{
+                fontSize: 20,
+                padding: 15,
+                color: "white",
+                textAlign: "center",
+              }}
+            >
+              {dummyData.title}
+            </Text>
+          </View>
+        ))}
       </ScrollView>
     </View>
   );
